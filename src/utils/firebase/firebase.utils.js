@@ -1,23 +1,26 @@
-// STEP 1 (IMPORT NEC MODULES)
 import { initializeApp } from 'firebase/app'
-// Authentication
+
+// FIREBASE AUTHENTICATION MODULE
 // All these modules are imported from firebase auth
 import { 
-    getAuth, 
+    getAuth, // auth method from firebase
     signInWithRedirect, 
-    signInWithPopup, 
-    GoogleAuthProvider,
-    createUserWithEmailAndPassword } 
-from 'firebase/auth';
-// Database
+    signInWithPopup, // route to 3rd parties sign in i.e. Google, faceback
+    GoogleAuthProvider, //get user access token from google
+    createUserWithEmailAndPassword, // create user access token from sign up info
+    signInWithEmailAndPassword // use existing use info to sign in
+} from 'firebase/auth';
+
+// FIREBASE DATABASE MODULE
 // All these modules are imported from firebase store
 import {
-    getFirestore,
+    getFirestore, //initialize firestore
     doc, //getting an instance of the doc
     getDoc, //get to read the doc
     setDoc // change the data
 } from 'firebase/firestore'
 
+// COPY and PASTSE from FIREBASE SETUP
 const firebaseConfig = {
     apiKey: "AIzaSyCfhQjJCiQyx9CT-OeZunBHKI_C5uBFYCk",
     authDomain: "online-shop-f70ba.firebaseapp.com",
@@ -29,32 +32,48 @@ const firebaseConfig = {
   
   const firebaseapp = initializeApp(firebaseConfig);
 
-  // STEP 2 (SET UP GOOGLE AUTH)
+  //PROVIDERS (i.e. GOOGLE, FACEBOOK)
   //Google requirement for provider
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({
       prompt: 'select_account'
   });
-
-  // Instantiate the authentication
+  //Initialize auth for sign in with 3rd parties provider
   export const auth = getAuth();
+
+  //3 METHODS BELOW ( to SIGN UP with GOOGLE or EMAIL, and to sign in with exising profile )
+
+  // 1. Instantiate Google authentication and get back USER OBJECT
   export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
+  // 2. Instantial New User sign-up and get back USER OBJECT
+  export const createAuthUserWithEmailAndPassword = async(email, password)=>{
+    if(!email || !password) return;
+    return createUserWithEmailAndPassword(auth, email, password);
+  }
 
-  // STEP 3 (CREATE DATABASE DOC WITH THE AUTH RESPONSE FROM GOOGLE)
-  // a. Instantiate fire store database
+   // 3. Sign in with existing users' email and password
+   export const signInAuthUserWithEmailAndPassword = async(email, password)=>{
+    if(!email || !password) return;
+    return signInWithEmailAndPassword(auth, email, password);
+  }
+
+
+  // Instantiate fire store database - 
   export const db = getFirestore(); // get database
-  // b. createdatabase
+  
+  
+  // Creation of a new document in DataBase - Need to pass in USER OBJECT from method 1 and 2 above
   export const createUserDocumentFromAuth = async (userAuth, additionalInformation) =>{ // userAuth is the response from google auth signinwithpopup
       if(!userAuth) return;
     // Create an instance of document with the uid 
-      // Arguments -  doc(nameOfFirebase - above 'db', NameWeGiveToCollection-we provide, uniqueID-choose ourself)
+      // Arguments -  doc(nameOfFirebase - above 'db', NameWeGiveToCollection, uniqueID-choose by ourself)
       const userDocRef = doc(db, 'users', userAuth.uid); //instance of doc generated from google auth
     //   console.log(userDocRef);
       // Access and read the user info from the auth instance of userDocRef
       const userSnapshot = await getDoc(userDocRef);
     //   console.log(userSnapshot);
-    //   console.log(userSnapshot.exists()); //check if the user data exist
+    //   Check if user document already exist in db. If no, create new, if yes, return back
       if(!userSnapshot.exists()) {
           const { displayName, email } = userAuth;
           const createdAt = new Date();
@@ -73,8 +92,6 @@ const firebaseConfig = {
   // Then use setDoc to create the data in db
 
 
-  // Step 4 after you set up the sign up form for new users
-  export const createAuthUserWithEmailAndPassword = async(email, password)=>{
-    if(!email || !password) return;
-    return createUserWithEmailAndPassword(auth, email, password);
-  }
+
+
+ 
