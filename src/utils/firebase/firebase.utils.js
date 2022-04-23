@@ -6,7 +6,8 @@ import {
     getAuth, 
     signInWithRedirect, 
     signInWithPopup, 
-    GoogleAuthProvider } 
+    GoogleAuthProvider,
+    createUserWithEmailAndPassword } 
 from 'firebase/auth';
 // Database
 // All these modules are imported from firebase store
@@ -44,8 +45,9 @@ const firebaseConfig = {
   // a. Instantiate fire store database
   export const db = getFirestore(); // get database
   // b. createdatabase
-  export const createUserDocumentFromAuth = async (userAuth) =>{ // userAuth is the response from google auth signinwithpopup
-      // Create an instance of document with the uid 
+  export const createUserDocumentFromAuth = async (userAuth, additionalInformation) =>{ // userAuth is the response from google auth signinwithpopup
+      if(!userAuth) return;
+    // Create an instance of document with the uid 
       // Arguments -  doc(nameOfFirebase - above 'db', NameWeGiveToCollection-we provide, uniqueID-choose ourself)
       const userDocRef = doc(db, 'users', userAuth.uid); //instance of doc generated from google auth
     //   console.log(userDocRef);
@@ -57,7 +59,7 @@ const firebaseConfig = {
           const { displayName, email } = userAuth;
           const createdAt = new Date();
           try {
-            await setDoc(userDocRef, { displayName, email, createdAt })
+            await setDoc(userDocRef, { displayName, email, createdAt, ...additionalInformation })
           } catch (error) {
               console.log(error.message)
           }
@@ -69,3 +71,10 @@ const firebaseConfig = {
   // Yes - return userDocRef
   // if user data does not exist
   // Then use setDoc to create the data in db
+
+
+  // Step 4 after you set up the sign up form for new users
+  export const createAuthUserWithEmailAndPassword = async(email, password)=>{
+    if(!email || !password) return;
+    return createUserWithEmailAndPassword(auth, email, password);
+  }
