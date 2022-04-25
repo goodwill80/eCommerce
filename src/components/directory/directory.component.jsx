@@ -2,8 +2,8 @@ import './directory.styles.scss'
 import CategoryItem from '../category-item/category-item.component'
 import categories from './categories.json'
 
-function Directory() {
 
+function Directory() {
  const list = categories.map(({id, title, imageUrl})=>(
     <CategoryItem
         key={id}

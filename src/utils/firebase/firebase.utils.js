@@ -1,17 +1,19 @@
 import { initializeApp } from 'firebase/app'
 
-// FIREBASE AUTHENTICATION MODULE
+// FIREBASE AUTHENTICATION MODULES
 // All these modules are imported from firebase auth
 import { 
-    getAuth, // auth method from firebase
+    getAuth, // auth method from firebase 
     signInWithRedirect, 
     signInWithPopup, // route to 3rd parties sign in i.e. Google, faceback
     GoogleAuthProvider, //get user access token from google
     createUserWithEmailAndPassword, // create user access token from sign up info
-    signInWithEmailAndPassword // use existing use info to sign in
+    signInWithEmailAndPassword, // use existing use info to sign in
+    signOut, // use for signing out a user
+    onAuthStateChanged // return back a listener
 } from 'firebase/auth';
 
-// FIREBASE DATABASE MODULE
+// FIREBASE DATABASE MODULES
 // All these modules are imported from firebase store
 import {
     getFirestore, //initialize firestore
@@ -30,6 +32,7 @@ const firebaseConfig = {
     appId: "1:985328494361:web:90794ba79fdc5b5ecf4788"
   };
   
+  // Initialize main confiq
   const firebaseapp = initializeApp(firebaseConfig);
 
   //PROVIDERS (i.e. GOOGLE, FACEBOOK)
@@ -41,7 +44,7 @@ const firebaseConfig = {
   //Initialize auth for sign in with 3rd parties provider
   export const auth = getAuth();
 
-  //3 METHODS BELOW ( to SIGN UP with GOOGLE or EMAIL, and to sign in with exising profile )
+  // THREE METHODS BELOW ( to SIGN UP with GOOGLE or EMAIL, and to sign in with exising profile )
 
   // 1. Instantiate Google authentication and get back USER OBJECT
   export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
@@ -57,17 +60,27 @@ const firebaseConfig = {
     if(!email || !password) return;
     return signInWithEmailAndPassword(auth, email, password);
   }
+  
+    // SIGN - OUT METHOD
+    export const signOutUser = async ()=> await signOut( auth );
+
+    // Set up an open observer Listener - this passes a callback as main parameter 
+    // it will then return the same callback as the 2nd paramenter of the onAuthstateChanged, next to auth state
+    // Therefore, it provides a listener to whenever there is an auth state change
+    export const onAuthStateChangedListener = (callback)=> onAuthStateChanged(auth, callback);
 
 
   // Instantiate fire store database - 
   export const db = getFirestore(); // get database
   
   
-  // Creation of a new document in DataBase - Need to pass in USER OBJECT from method 1 and 2 above
+  // Creation of a new document in DataBase - Need to pass in USER OBJECT from method 1 and 
+  // 2 above
   export const createUserDocumentFromAuth = async (userAuth, additionalInformation) =>{ // userAuth is the response from google auth signinwithpopup
       if(!userAuth) return;
     // Create an instance of document with the uid 
-      // Arguments -  doc(nameOfFirebase - above 'db', NameWeGiveToCollection, uniqueID-choose by ourself)
+      // Arguments -  doc(nameOfFirebase - above 'db', NameWeGiveToCollection, 
+      // uniqueID-choose by ourself)
       const userDocRef = doc(db, 'users', userAuth.uid); //instance of doc generated from google auth
     //   console.log(userDocRef);
       // Access and read the user info from the auth instance of userDocRef
@@ -86,10 +99,12 @@ const firebaseConfig = {
       return userDocRef;
   }
 
+
   // if user data exist 
   // Yes - return userDocRef
   // if user data does not exist
   // Then use setDoc to create the data in db
+
 
 
 

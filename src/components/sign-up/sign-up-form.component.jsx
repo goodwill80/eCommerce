@@ -1,4 +1,3 @@
-import { async } from '@firebase/util';
 import { useState } from 'react';
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils';
 import FormInput from '../form-input/form-input.component';
@@ -6,6 +5,7 @@ import './sign-up-form.styles.scss';
 import Button from '../button/button.component';
 
 function SignUpForm() {
+    
     const defaultForm = {
         displayName: '',
         email: '',
@@ -21,7 +21,7 @@ function SignUpForm() {
             alert("Confirm password differs from orginal input")
         }
         try {
-            // add to user auth in firebase - only email and password is added
+            // add to user auth in firebase - only email and password is added. Note: we don't send display name to firebae Auth. 
             const { user } = await createAuthUserWithEmailAndPassword(email, password);
             // add to firestore db of all details plus display name
             await createUserDocumentFromAuth(user, { displayName });
