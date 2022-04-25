@@ -60,12 +60,13 @@ const firebaseConfig = {
     if(!email || !password) return;
     return signInWithEmailAndPassword(auth, email, password);
   }
-  
-    // SIGN - OUT METHOD
+
+    // 4. SIGN - OUT METHOD
     export const signOutUser = async ()=> await signOut( auth );
 
-    // Set up an open observer Listener - this passes a callback as main parameter 
-    // it will then return the same callback as the 2nd paramenter of the onAuthstateChanged, next to auth state
+    // 5. Set up an open observer Listener - this passes a callback as main parameter 
+    // it will then return the same callback as the 2nd paramenter of the onAuthstateChanged, 
+    // next to auth state
     // Therefore, it provides a listener to whenever there is an auth state change
     export const onAuthStateChangedListener = (callback)=> onAuthStateChanged(auth, callback);
 
@@ -73,9 +74,7 @@ const firebaseConfig = {
   // Instantiate fire store database - 
   export const db = getFirestore(); // get database
   
-  
-  // Creation of a new document in DataBase - Need to pass in USER OBJECT from method 1 and 
-  // 2 above
+  // Creation of a new document in DataBase - Need to pass in USER OBJECT 
   export const createUserDocumentFromAuth = async (userAuth, additionalInformation) =>{ // userAuth is the response from google auth signinwithpopup
       if(!userAuth) return;
     // Create an instance of document with the uid 
