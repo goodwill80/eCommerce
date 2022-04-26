@@ -7,17 +7,17 @@ function CartIcon() {
     const { toggle, isCartOpen, cartCount } = useContext(CartContext);
     const ref = useRef();
 
-    useEffect(()=>{
-        const checkedIFClickedOutOfCart = e => {
-            if( isCartOpen && ref.current && !ref.current.contains(e.target)) {
-                toggle();
-            }
-        }
-        document.addEventListener("mousedown", checkedIFClickedOutOfCart);
-        return ()=> {
-            document.removeEventListener("mousedown", checkedIFClickedOutOfCart);
-        }
-    }, [isCartOpen])
+    // useEffect(()=>{
+    //     const checkedIFClickedOutOfCart = e => {
+    //         if( isCartOpen && ref.current && !ref.current.contains(e.target)) {
+    //             toggle();
+    //         }
+    //     }
+    //     document.addEventListener("mousedown", checkedIFClickedOutOfCart);
+    //     return ()=> {
+    //         document.removeEventListener("mousedown", checkedIFClickedOutOfCart);
+    //     }
+    // }, [isCartOpen])
     
   
 
