@@ -9,10 +9,13 @@ import { CartContext } from '../../contexts/cart.context';
 function CartDropdown() {
     const { cartItems, toggle, isCartOpen } = useContext(CartContext);
     const ref = useRef();
+    const ref2 = useRef();
 
     useEffect(()=>{
         const checkedIFClickedOutOfCart = e => {
-            if( isCartOpen && ref.current && !ref.current.contains(e.target)) {
+            if( isCartOpen && ref.current && 
+                !ref.current.contains(e.target) && 
+                !ref2.current.contains(e.target)) {
                 toggle();
             }
         }
@@ -23,7 +26,7 @@ function CartDropdown() {
     }, [isCartOpen])
 
   return (
-    <div className="cart-dropdown-container">
+    <div className="cart-dropdown-container" ref={ref2}>
       <div className="cart-items">
         { cartItems.map(item=> (
             <CartItem
@@ -32,7 +35,7 @@ function CartDropdown() {
             />
         ))}
       </div>
-        <Link to='/checkout' ref={ref}>
+        <Link ref={ref} to='/checkout'>
         <Button>Go TO CHECKOUT</Button>
         </Link>
     </div>
