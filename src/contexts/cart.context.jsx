@@ -42,14 +42,6 @@ function CartContextProvider(props) {
         setTotalCost(cost);
     }, [cartItems])
 
-
-    // + qty in checkout Page ***Duplicate, we can recycle the code from addItemsToCart
-    // const add = (id)=>{
-    //     const addedItemList = cartItems.map(item=> item.id === id ? 
-    //             {...item, quantity: item.quantity + 1} :
-    //             item )
-    //         setCartItems(addedItemList) }
-    
     // - qty in checkout Page
     const subtract = (id)=>{
         const deletedItemList = cartItems.map(item=> item.id === id ?

@@ -6,14 +6,14 @@ import Shop from "./routes/shop/shop.component";
 import CheckOutPage from "./routes/checkout/checkout.component";
 
 
-
+// path="shop/*" this represent what ever after the slash, just render
 
 function App() {
   return (
     <Routes>
       <Route path='/' element={<Navigation />}>
         <Route index element={<Home />} />
-        <Route path="shop" element={<Shop />} />
+        <Route path="shop/*" element={<Shop />} />   
         <Route path="auth" element={<Authentication />}/>
         <Route path="checkout" element={<CheckOutPage />}/>
       </Route>

@@ -1,14 +1,14 @@
-import './category-item.styles.scss';
+import './directory-item.styles.scss';
 
-function CategoryItem({ title, imageUrl }) {
+function DirectoryItem({ title, imageUrl }) {
  
   return (
-      <div className="category-container">
+      <div className="directory-item-container">
         <div 
             className="background-image"
             style={{backgroundImage:`url(${imageUrl})`}}
         />
-        <div className="category-body-container">
+        <div className="body">
             <h2>{title}</h2>
             <p>Shop Now</p>
         </div>
@@ -16,4 +16,4 @@ function CategoryItem({ title, imageUrl }) {
   )
 }
 
-export default CategoryItem;
+export default DirectoryItem;

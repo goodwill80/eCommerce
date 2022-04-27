@@ -19,7 +19,11 @@ import {
     getFirestore, //initialize firestore
     doc, //getting an instance of the doc
     getDoc, //get to read the doc
-    setDoc // change the data
+    setDoc, // change the data
+    collection, // allow us to get create a collection - same as getdoc
+    writeBatch, // allow us to write info into the collection
+    query, // To read collection
+    getDocs
 } from 'firebase/firestore'
 
 // COPY and PASTSE from FIREBASE SETUP
@@ -73,9 +77,43 @@ const firebaseConfig = {
 
   // Instantiate fire store database - 
   export const db = getFirestore(); // get database
+
+  // ADD collection to DB (MANUAL)
+  export const addCollectionAndDocument = async(nameOfCollectionKey, objectToAdd)=>{
+    //create a collection instance with the name
+    const collectionRef = collection(db, nameOfCollectionKey); 
+    // create batch instance
+    const batch = writeBatch(db); 
+    objectToAdd.forEach((object)=> {
+        // collection ref will tell doc which db we're using
+        const docRef = doc(collectionRef, object.title.toLowerCase()) 
+        batch.set(docRef, object);
+    });
+    await batch.commit();
+    console.log('done');
+    }
+
+    // GET collection from DB 
+    export const getCategoriesAndDocuments = async () => {
+        //catergories is the collection key we made when adding our collection into db
+        const collectionRef = collection(db, 'categories'); 
+        const q = query(collectionRef);
+        // fetch docs snapshots of data in Array
+        const querySnapshot = await getDocs(q);
+        // we then reduce the data to the structures we want 
+        const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot)=> {
+            // give me the specific data (destructure) from docSnapshot
+            const { title, items } = docSnapshot.data();
+            // reassign hash key acc[title] to be equal to items (different categories array)
+            acc[title.toLowerCase()] = items;
+            return acc;
+        }, {})
+        // This will be the actual categories that we can use 
+        return categoryMap;
+    }
   
-  // Creation of a new document in DataBase - Need to pass in USER OBJECT 
-  export const createUserDocumentFromAuth = async (userAuth, additionalInformation) =>{ // userAuth is the response from google auth signinwithpopup
+    // Creation of a new document in DataBase - Need to pass in USER OBJECT 
+    export const createUserDocumentFromAuth = async (userAuth, additionalInformation) =>{ // userAuth is the response from google auth signinwithpopup
       if(!userAuth) return;
     // Create an instance of document with the uid 
       // Arguments -  doc(nameOfFirebase - above 'db', NameWeGiveToCollection, 

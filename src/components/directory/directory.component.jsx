@@ -1,11 +1,11 @@
 import './directory.styles.scss'
-import CategoryItem from '../category-item/category-item.component'
+import DirectoryItem from '../category-item/directory-item.component'
 import categories from './categories.json'
 
 
 function Directory() {
  const list = categories.map(({id, title, imageUrl})=>(
-    <CategoryItem
+    <DirectoryItem
         key={id}
         title={title}
         imageUrl={imageUrl}
