@@ -5,22 +5,22 @@ import {ShoppingIcon, CartIconContainer, ItemCount } from './cart-icon.styles.js
 
 function CartIcon() {
     const { toggle, isCartOpen, cartCount } = useContext(CartContext);
-    // const ref = useRef();
+    const ref = useRef();
 
-    // useEffect(()=>{
-    //     const checkedIFClickedOutOfCart = e => {
-    //         if( isCartOpen && ref.current && !ref.current.contains(e.target)) {
-    //             toggle();
-    //         }
-    //     }
-    //     document.addEventListener("mousedown", checkedIFClickedOutOfCart);
-    //     return ()=> {
-    //         document.removeEventListener("mousedown", checkedIFClickedOutOfCart);
-    //     }
-    // }, [isCartOpen, toggle])
+    useEffect(()=>{
+        const checkedIFClickedOutOfCart = e => {
+            if( isCartOpen && ref.current && !ref.current.contains(e.target)) {
+                toggle();
+            }
+        }
+        document.addEventListener("mousedown", checkedIFClickedOutOfCart);
+        return ()=> {
+            document.removeEventListener("mousedown", checkedIFClickedOutOfCart);
+        }
+    }, [isCartOpen])
 
   return (
-    <CartIconContainer>
+    <CartIconContainer ref={ref}>
       <ShoppingIcon onClick={()=>toggle()} />
       <ItemCount>{cartCount}</ItemCount>
     </CartIconContainer>
