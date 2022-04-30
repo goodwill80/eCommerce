@@ -12,34 +12,46 @@ function CartDropdown() {
     const ref2 = useRef();
 
     useEffect(()=>{
-        const checkedIFClickedOutOfCart = e => {
-            if( isCartOpen && ref.current && 
-                !ref.current.contains(e.target) && 
-                !ref2.current.contains(e.target)) {
-                toggle();
-            }
+        function checkedIFClickedOutOfCart(e) {
+        if (isCartOpen && ref.current &&
+          !ref.current.contains(e.target) &&
+          !ref2.current.contains(e.target)) {
+          toggle();
         }
+      }
         document.addEventListener("mousedown", checkedIFClickedOutOfCart);
         return ()=> {
             document.removeEventListener("mousedown", checkedIFClickedOutOfCart);
         }
-    }, [isCartOpen])
+    }, [isCartOpen, toggle])
+
+    const btnDisabled = ()=>{
+      if(cartItems.length > 0) return false;
+      if(cartItems.length < 1) return true;
+    }
 
   return (
     <div className="cart-dropdown-container" ref={ref2}>
-      <div className="cart-items">
-        { cartItems.map(item=> (
-            <CartItem
-            key={item.id}
-            cartItem={{...item}}
-            />
-        ))}
-      </div>
-        <Link ref={ref} to='/checkout'>
-        <Button>Go TO CHECKOUT</Button>
-        </Link>
+    <div className="cart-items">
+      { cartItems.length ?
+      cartItems.map(item=> (
+          <CartItem
+          key={item.id}
+          cartItem={{...item}}
+          />
+      )) :
+      <span>No items in cart</span>
+      
+      }
     </div>
-  )
+    
+            <Link ref={ref} to='/checkout'>
+            <Button disabled={btnDisabled()}>Go TO CHECKOUT</Button>
+            </Link> 
+     
+  
+  </div>
+)
 }
 
 export default CartDropdown;
