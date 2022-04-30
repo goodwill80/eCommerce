@@ -10,7 +10,7 @@ function UserContextProvider (props) {
     // this will allow us to centralise our sign-out methods in sign-in, sign-out and navigation in 1 place
     useEffect(()=>{
         const unsubcribe = onAuthStateChangedListener((user)=>{
-            console.log(user);
+            // console.log(user);
             if(user) {
                 createUserDocumentFromAuth(user);
             }
