@@ -4,6 +4,7 @@ import { initializeApp } from 'firebase/app'
 // All these modules are imported from firebase auth
 import { 
     getAuth, // auth method from firebase 
+    signInWithRedirect,
     signInWithPopup, // route to 3rd parties sign in i.e. Google, faceback
     GoogleAuthProvider, //get user access token from google
     createUserWithEmailAndPassword, // create user access token from sign up info
