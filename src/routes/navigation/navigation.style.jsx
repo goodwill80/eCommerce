@@ -8,7 +8,6 @@ export const NavigationContainer = styled.div`
       justify-content: space-between;
       margin-bottom: 25px;
 `
-
 export const LogoContainer = styled(Link)`
       height: 100%;
       width: 70px;

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils';
 import FormInput from '../form-input/form-input.component';
 import './sign-up-form.styles.scss';
-import Button from '../button/button.component';
+import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
 
 function SignUpForm() {
     
@@ -72,7 +72,7 @@ function SignUpForm() {
                     value={confirmPassword}
                     onChange={handleChange}
                 />
-               <Button type="submit">Submit</Button>
+               <Button type="submit" buttonType={ BUTTON_TYPE_CLASSES.base} >Submit</Button>
             </form>
         </div>
     )

@@ -1,17 +1,29 @@
-import { useContext } from 'react';
+import { useContext, useRef, useEffect  } from 'react';
 import { CartContext } from '../../contexts/cart.context';
-import './cart-icon.styles.scss';
-import { ReactComponent as ShoppingIcon } from '../../assets/shopping-bag.svg';
+import {ShoppingIcon, CartIconContainer, ItemCount } from './cart-icon.styles.jsx';
+
 
 function CartIcon() {
     const { toggle, isCartOpen, cartCount } = useContext(CartContext);
+    // const ref = useRef();
+
+    // useEffect(()=>{
+    //     const checkedIFClickedOutOfCart = e => {
+    //         if( isCartOpen && ref.current && !ref.current.contains(e.target)) {
+    //             toggle();
+    //         }
+    //     }
+    //     document.addEventListener("mousedown", checkedIFClickedOutOfCart);
+    //     return ()=> {
+    //         document.removeEventListener("mousedown", checkedIFClickedOutOfCart);
+    //     }
+    // }, [isCartOpen, toggle])
 
   return (
-    <div className="cart-icon-container">
-      <ShoppingIcon className="shopping-icon"
-                    onClick={()=>toggle()} />
-      <span className="item-count">{cartCount}</span>
-    </div>
+    <CartIconContainer>
+      <ShoppingIcon onClick={()=>toggle()} />
+      <ItemCount>{cartCount}</ItemCount>
+    </CartIconContainer>
   )
 }
 

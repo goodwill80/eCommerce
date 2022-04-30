@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from 'react';
 import useToogleHook from '../hooks/toggle.hook';
 
 const addCartItem = (cartItems, productToAdd) => {
-   const itemIsInCart = cartItems.find(item=>item.id === productToAdd.id)
+   const itemIsInCart = cartItems.find(item=>item.id === productToAdd.id) // true or false
    if (itemIsInCart) {
        return cartItems.map(item=> item.id === productToAdd.id ?
             {...item, quantity: item.quantity + 1} :
@@ -42,7 +42,7 @@ function CartContextProvider(props) {
         setTotalCost(cost);
     }, [cartItems])
 
-    // - qty in checkout Page
+    // subtract qty in checkout Page
     const subtract = (id)=>{
         const deletedItemList = cartItems.map(item=> item.id === id ?
                 {...item, quantity: item.quantity - 1} :
